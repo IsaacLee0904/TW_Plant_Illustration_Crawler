@@ -1,5 +1,6 @@
 # TW_Plant_Illustration_Crawler
-
+## Repository structure
+```
 │
 ├── app/                    # 應用程式的主要資料夾
 │   ├── api/                # 處理API路由和邏輯
@@ -37,3 +38,4 @@
 ├── Dockerfile              # Docker檔案，用於構建應用程式的容器
 ├── requirements.txt        # Python依賴檔案
 └── README.md               # 專案說明文件
+```
