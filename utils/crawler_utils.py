@@ -2,11 +2,12 @@
 import datetime
 from time import sleep
 import sys
-import re
+import json
 ### web crawling with Selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.common.exceptions import NoSuchElementException
 
 def open_selenium_remote_browser(url):
     """
@@ -96,4 +97,69 @@ def get_level_1(driver, max_pages=5):
 
     return links_list
 
+def get_text_info(driver, xpath):
+    """
+    Safely finds an element by its XPath, returning None if the element does not exist.
+    
+    Args:
+        driver (webdriver.Remote): The Selenium WebDriver instance.
+        xpath (str): The XPath of the element to find.
+    
+    Returns:
+        str: The text of the found element or "NULL" if not found.
+    """
+    try:
+        return driver.find_element(By.XPATH, xpath).text
 
+    except NoSuchElementException:
+        return "NULL"  # return NULL if element does not exist
+
+def get_image_url(driver, xpath):
+    """
+    Safely finds an image element by its XPath and returns its 'src' attribute.
+    
+    Args:
+        driver (webdriver.Remote): The Selenium WebDriver instance.
+        xpath (str): The XPath of the image element to find.
+    
+    Returns:
+        str: The 'src' attribute of the found image element or "NULL" if not found.
+    """
+    try:
+        image_element = driver.find_element(By.XPATH, xpath)
+        return image_element.get_attribute('src')
+
+    except NoSuchElementException:
+        return "NULL" # return NULL if element does not exist
+
+def get_level_2(driver, url):
+    """
+    Navigates to the given URL and extracts specified information from the page.
+    
+    Args:
+        driver (webdriver.Remote): The Selenium WebDriver instance.
+        url (str): URL of the page to extract information from.
+        
+    Returns:
+        dict: Extracted information in a dictionary.
+    """
+    driver.get(url)
+
+    data = {
+        "chinese_name": get_text_info(driver, '//*[@id="collection-title"]/dd[1]'),
+        "scientific_name": get_text_info(driver, '//*[@id="collection-title"]/dd[2]'),
+        "museum_number": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[1]'),
+        "catalog_number": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[2]'),
+        "reference": get_text_info(driver, '//*[@id="quote-data"]'),
+        "collection_date": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[17]'),
+        "collector_chinese": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[15]'),
+        "collector_Eng": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[16]'),
+        "latitude": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[20]'),
+        "longitude": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[21]'),
+        "country": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[22]'),
+        "administrative_region": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[23]'),
+        "minimum_elevation": get_text_info(driver, '//*[@id="main-content-inner"]/article/dl/dd[24]'),
+        "image_url": get_image_url(driver, '//*[@id="main-content-inner"]/article/div/div[2]/div/img'),
+    }
+    
+    return data
