@@ -1,18 +1,32 @@
 ### import package
+import os
 import datetime
 from time import sleep
 import sys
 import re
-## web crawling with Selenium
-# basic selenium
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+### web crawling with Selenium
+from selenium.webdriver.common.by import By
 
-### open chrome webdriver
-driver = webdriver.Remote(
-        command_executor = 'http://172.17.0.2:4444/wd/hub' # selnium docker cotainer IPAdress
-        , desired_capabilities = DesiredCapabilities.CHROME
-)
-driver.get('https://sinica.digitalarchives.tw/collection.php?type=3799') # Academia Sinica Digital Archive Website
-print(driver.title)
-driver.quit() 
+### import modules
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(project_root)
+
+from utils.crawler_utils import open_selenium_remote_browser
+from utils.crawler_utils import get_level_1
+
+### Open Chrome WebDriver
+def main():
+    url = 'https://sinica.digitalarchives.tw/collection.php?type=3799'  # URL of the Academia Sinica Digital Archive Website
+    driver = open_selenium_remote_browser(url)  # Initialize and open a remote browser 
+
+    # Use the get_level_1 function to collect links
+    links_list = get_level_1(driver)
+
+    # Print the collected links
+    for link in links_list:
+        print(link)
+        
+    driver.quit()  # Close the browser session and quit the driver
+
+if __name__ == "__main__":
+    main()  # Execute the main function if this script is run as the main program
