@@ -6,22 +6,11 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install Chrome
+# Install system packages, create a new conda environment, install Python packages, and clean up in one RUN command to reduce image layers
 RUN apt-get update && \
-    apt-get install -y wget unzip && \
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get install -y ./google-chrome-stable_current_amd64.deb || true && \
-    apt-get -f install -y && \
-    rm google-chrome-stable_current_amd64.deb && \
-    apt-get clean
-
-# Install ChromeDriver
-RUN wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip && \
-    unzip chromedriver_linux64.zip -d /usr/local/bin/ && \
-    rm chromedriver_linux64.zip
-
-# Create Conda environment and install Python packages
-RUN conda create -n env python=3.8 -y && \
+    apt-get install -y gcc g++ git && \
+    rm -rf /var/lib/apt/lists/* && \
+    conda create -n env python=3.8 -y && \
     echo "source activate env" > ~/.bashrc && \
     /bin/bash -c "source activate env && \
     pip install --upgrade pip && \
