@@ -10,9 +10,10 @@ from selenium.webdriver.common.by import By
 ### import modules
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(project_root)
-
 from utils.crawler_utils import open_selenium_remote_browser
 from utils.crawler_utils import get_level_1
+from utils.crawler_utils import get_level_2
+from utils.ETL_utils import save_data_to_json
 
 ### Open Chrome WebDriver
 def main():
@@ -21,10 +22,13 @@ def main():
 
     # Use the get_level_1 function to collect links
     links_list = get_level_1(driver)
+    all_data = []
 
-    # Print the collected links
     for link in links_list:
-        print(link)
+        data = get_level_2(driver, link)
+        all_data.append(data)
+    
+    save_data_to_json(all_data)
         
     driver.quit()  # Close the browser session and quit the driver
 
