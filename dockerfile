@@ -14,7 +14,7 @@ RUN apt-get update && \
     echo "source activate env" > ~/.bashrc && \
     /bin/bash -c "source activate env && \
     pip install --upgrade pip && \
-    pip install bs4==0.0.1 requests==2.25.1 scrapy==2.5.0 selenium==3.141.0 pandas fastapi uvicorn jinja2" && \
+    pip install bs4==0.0.1 requests==2.25.1 scrapy==2.5.0 selenium==3.141.0 pandas fastapi uvicorn jinja2 httpx starlette" && \
     conda clean -afy
 
 # Make port 8000 available to the world outside this container
