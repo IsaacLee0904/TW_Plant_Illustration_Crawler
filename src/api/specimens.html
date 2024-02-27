@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Specimens</title>
+</head>
+<body>
+    <h1>Specimens</h1>
+    <table>
+        <tr>
+            <th>Chinese Name</th>
+            <th>Scientific Name</th>
+            <th>Museum Number</th>
+            <th>Image URL</th>
+        </tr>
+        {% for specimen in specimens %}
+        <tr>
+            <td>{{ specimen.chinese_name }}</td>
+            <td>{{ specimen.scientific_name }}</td>
+            <td>{{ specimen.museum_number }}</td>
+            <td><img src="{{ specimen.image_url }}" alt="Image" style="width:100px;"></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
