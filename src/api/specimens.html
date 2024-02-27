@@ -11,14 +11,18 @@
             <th>Chinese Name</th>
             <th>Scientific Name</th>
             <th>Museum Number</th>
-            <th>Image URL</th>
+            <th>Image</th> 
         </tr>
         {% for specimen in specimens %}
         <tr>
             <td>{{ specimen.chinese_name }}</td>
             <td>{{ specimen.scientific_name }}</td>
             <td>{{ specimen.museum_number }}</td>
-            <td><img src="{{ specimen.image_url }}" alt="Image" style="width:100px;"></td>
+            <td>
+                <a href="/download-image/?image_url={{ specimen.image_url }}" download>
+                    <img src="{{ specimen.image_url }}" alt="Image" style="width:100px;">
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </table>
