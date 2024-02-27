@@ -40,3 +40,21 @@ Crawl data from this url: https://sinica.digitalarchives.tw/collection.php?type=
 ├── Dockerfile              
 └── README.md               
 ```
+## Env setup
+```
+docker pull selenium/standalone-chrome
+docker build -t tw_plant_illustration_crawler .
+```
+## Run code 
+### Crawler
+```
+docker run -v /Users/wen/Desktop/TW_Plant_Illustration_crawler:/app tw_plant_illustration_crawler /bin/bash -c "source activate env && python src/crawler/crawler.py"
+```
+### ETL
+```
+docker run -v /Users/wen/Desktop/TW_Plant_Illustration_crawler:/app tw_plant_illustration_crawler /bin/bash -c "source activate env && python src/ETL/etl.py"
+```
+### API
+```
+docker run -v /Users/wen/Desktop/TW_Plant_Illustration_crawler:/app -p 8000:8000 tw_plant_illustration_crawler /bin/bash -c "source activate env && uvicorn src.api.api:app --host 0.0.0.0 --reload"
+```
