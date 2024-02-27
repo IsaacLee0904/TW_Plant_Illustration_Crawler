@@ -1,6 +1,8 @@
 import json
 import os
 import datetime
+from pandas import DataFrame
+import sqlite3
 
 def save_data_to_json(data):
     """
@@ -69,3 +71,24 @@ def reshape_df(df):
     reshaped_df = df[column_order].copy()
     
     return reshaped_df
+
+def insert_into_db(df: DataFrame, db_path: str):
+    """
+    Inserts data from a DataFrame into a SQLite database.
+
+    Parameters:
+    - df: DataFrame containing the data to be inserted.
+    - db_path: The path to the SQLite database file.
+
+    """
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+    table_name = 'specimens'
+    
+    df.to_sql(table_name, conn, if_exists='append', index=False)
+    
+    conn.commit()
+    conn.close()
+    
+    print(f"Data inserted into '{table_name}' table successfully.")
