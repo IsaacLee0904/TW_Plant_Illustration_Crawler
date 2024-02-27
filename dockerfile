@@ -14,11 +14,11 @@ RUN apt-get update && \
     echo "source activate env" > ~/.bashrc && \
     /bin/bash -c "source activate env && \
     pip install --upgrade pip && \
-    pip install bs4==0.0.1 requests==2.25.1 scrapy==2.5.0 selenium==3.141.0 pandas" && \
+    pip install bs4==0.0.1 requests==2.25.1 scrapy==2.5.0 selenium==3.141.0 pandas fastapi uvicorn" && \
     conda clean -afy
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
 # Run main.py when the container launches
-CMD ["/bin/bash", "-c", "source activate env && python main.py"]
+CMD ["/bin/bash", "-c", "source activate env && uvicorn main:app --host 0.0.0.0"]
