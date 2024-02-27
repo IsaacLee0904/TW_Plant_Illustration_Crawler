@@ -1,9 +1,11 @@
 import sqlite3
+import httpx
 from typing import List, Optional
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, HttpUrl
+from starlette.responses import StreamingResponse
 
 # define the model
 class Specimen(BaseModel):
@@ -37,3 +39,14 @@ templates = Jinja2Templates(directory="src/api")
 async def read_root(request: Request):
     specimens = get_specimens()  
     return templates.TemplateResponse("specimens.html", {"request": request, "specimens": specimens})
+
+@app.get("/download-image/")
+async def download_image(image_url: str):
+    async with httpx.AsyncClient() as client:
+        try:
+            r = await client.get(image_url)
+            r.raise_for_status()  
+        except httpx.HTTPStatusError:
+            raise HTTPException(status_code=404, detail="downloading image failed")
+
+        return StreamingResponse(r.iter_bytes(), media_type=r.headers["Content-Type"])
