@@ -35,3 +35,37 @@ def save_data_to_json(data):
             json_file.write(line)
     
     print('[Crawler End]')
+
+def split_col_value(df, columns):
+    """
+    Splits the value of specified columns at the first occurrence of ':' and keeps the part after it.
+    
+    Args:
+        df (pd.DataFrame): The DataFrame containing the columns to be processed.
+        columns (list of str): A list of column names in the DataFrame to be split and processed.
+    """
+    for col in columns:
+        df[col] = df[col].str.split(':').str.get(1)
+
+def reshape_df(df):
+    """
+    Reorganize the DataFrame based on specified column order.
+
+    Parameters:
+    - df: The input DataFrame to be reshaped.
+
+    Returns:
+    - A new DataFrame reorganized based on the specified column order.
+    """
+    column_order = ['chinese_name', 'scientific_name', 'museum_number', 'catalog_number',
+                    'reference', 'collection_date', 'collector',
+                    'latitude', 'longitude', 'country', 'administrative_region',
+                    'minimum_elevation', 'image_url']
+    
+    for column in column_order:
+        if column not in df.columns:
+            raise ValueError(f"Column '{column}' is not in the DataFrame")
+    
+    reshaped_df = df[column_order].copy()
+    
+    return reshaped_df
