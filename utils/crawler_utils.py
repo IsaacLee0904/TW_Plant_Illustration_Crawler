@@ -31,36 +31,7 @@ def open_selenium_remote_browser(url):
     
     return driver
 
-# def get_level_1(driver):
-#     """
-#     Collects links from all pages by iterating through pages and clicking the "next page" button until it no longer exists.
-    
-#     Args:
-#         driver (webdriver.Remote): The Selenium WebDriver instance.
-        
-#     Returns:
-#         list: A list of collected links.
-#     """
-    
-#     links_list = []  # Corrected variable name
-
-#     while True:
-#         # Collect all links on the current page
-#         page_links = driver.find_elements(By.XPATH, '//*[@id="list"]/li/div[2]/a')
-#         for link in page_links:
-#             links_list.append(link.get_attribute('href'))  # Corrected variable name
-        
-#         # Try to find and click the "next page" button
-#         try:
-#             next_page_button = driver.find_element(By.XPATH, '//*[@id="main-content-inner"]/div[3]/div[4]/a/i')
-#             next_page_button.click()
-#             sleep(2)  # Wait for the page to load after clicking
-#         except Exception as e:
-#             break  # Break the loop if "next page" button is not found
-
-#     return links_list
-
-def get_level_1(driver, max_pages=5):
+def get_level_1(driver, max_pages=4924):
     """
     Collects links from all pages by iterating through pages and clicking the "next page" button until it no longer exists
     or the specified maximum number of pages has been reached.

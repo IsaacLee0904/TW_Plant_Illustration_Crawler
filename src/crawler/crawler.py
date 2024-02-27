@@ -10,9 +10,7 @@ from selenium.webdriver.common.by import By
 ### import modules
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(project_root)
-from utils.crawler_utils import open_selenium_remote_browser
-from utils.crawler_utils import get_level_1
-from utils.crawler_utils import get_level_2
+from utils.crawler_utils import open_selenium_remote_browser, get_level_1, get_level_2
 from utils.ETL_utils import save_data_to_json
 
 ### Open Chrome WebDriver
