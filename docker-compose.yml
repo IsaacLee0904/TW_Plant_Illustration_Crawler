@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    command: /bin/bash -c "source activate env && uvicorn src.api.api:app --host 0.0.0.0 --reload"
+    depends_on:
+      - selenium
+  selenium:
+    image: selenium/standalone-chrome
+    ports:
+      - "4444:4444"

@@ -21,4 +21,5 @@ RUN apt-get update && \
 EXPOSE 8000
 
 # Run main.py when the container launches
-CMD ["/bin/bash", "-c", "source activate env && uvicorn main:app --host 0.0.0.0"]
+CMD ["/bin/bash", "-c", "source activate env && uvicorn src.api.api:app --host 0.0.0.0 --reload"]
+
